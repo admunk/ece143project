@@ -1,7 +1,7 @@
 # ECE143 project group 21
 ## Myers-Briggs Personality Analysis in Python
 <p align="center">
-  <font size=24>
+  <font size=5>
     Personality Type
   </font>
 </p>

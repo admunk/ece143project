@@ -15,6 +15,7 @@
 ## Bingze
 <ul>
 <li>Compile data on message length</li>
+<li>Show the average links(Https) used in the comments</li>
 </ul>
 
 ## Huaijin

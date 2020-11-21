@@ -16,6 +16,7 @@
 <ul>
 <li>Compile data on message length</li>
 <li>Show the average links(Https) used in the comments</li>
+<li>Pie chart of each type</li>
 </ul>
 
 ## Huaijin

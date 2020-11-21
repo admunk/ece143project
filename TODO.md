@@ -2,24 +2,38 @@
 
 ## Allen 
 <ul>
-<li>Find ratio of link to text</li>
-<li>Parse data from Youtube links</li>
+<li>Find ratio of link to text </li>
+<li>Parse data from Youtube links </li>
+
+<li>Spotify data and genre data</li>
 </ul>
 
 ## Kaustav 
 <ul>
 <li>Share word data parse code</li>
 <li>Continue with word cloud generation/common word trends</li>
+
+<li>More data on word clouds<li>
 </ul>
 
 ## Bingze
 <ul>
 <li>Compile data on message length</li>
-<li>Show the average links(Https) used in the comments</li>
-<li>Pie chart of each type</li>
+
+<li>Pi chart and visualize link data</li>
 </ul>
 
 ## Huaijin
 <ul>
 <li>Parse data to find how often personalities use certain types of pronouns</li>
+
+<li>Visualize data<li>
 </ul>
+
+## Visualization
+<ul>
+<li>Pi chart(Categorical Data)</li>
+<li>Swarm + Box Plot(Averages)</li>
+<li>Word Cloud</li>
+</ul>
+

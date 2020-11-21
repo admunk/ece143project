@@ -26,8 +26,9 @@
 ## Huaijin
 <ul>
 <li>Parse data to find how often personalities use certain types of pronouns</li>
-
-<li>Visualize data<li>
+<li> Visulize data: 
+<li> 1. pie chart for distribution over each pron. for each personaility (subgrouped)</li>
+<li> 2. word count vs. personality </li>
 </ul>
 
 ## Visualization

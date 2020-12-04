@@ -72,6 +72,7 @@ def make_genre_files():
         output_file.close()
 
 def make_genre_charts():
+    total_dict = {}
     for personality in type_list:
         input_file = open("link_data/spotify-{0}.csv".format(personality)) 
         labels = []
@@ -87,6 +88,7 @@ def make_genre_charts():
                 components = line.split(',')
                 genre_count_dict[components[0]] = components[1]
                 if(int(components[1]) > 0):   
+                    total_dict[components[0]] = total_dict.get(components[0], 0) + int(components[1])
                     labels.append(components[0])
                     count.append(components[1])
                     colors.append(color_list[color_index])
@@ -96,9 +98,55 @@ def make_genre_charts():
             fig, ax = plt.subplots(figsize=(20, 10), subplot_kw=dict(aspect="equal"))
             wedges, texts, autotexts = ax.pie(count, labels=labels,autopct='%1.1f%%',
                                     textprops=dict(color="w"),pctdistance=0.9,startangle=90,colors = colors)
-            ax.legend(wedges, labels, title="Personality Types", bbox_to_anchor=(1, 0, 0.5, 1))
+            ax.legend(wedges, labels, title="Genres", bbox_to_anchor=(1, 0, 0.5, 1))
             plt.setp(autotexts, size=8,weight="bold")
             ax.set_title("{0}'s Genres".format(personality),size=16)
             plt.show()
+    fig, ax = plt.subplots(figsize=(20, 10), subplot_kw=dict(aspect="equal"))
+    wedges, texts, autotexts = ax.pie(list(total_dict.values()), labels=list(total_dict.keys()),autopct='%1.1f%%',
+                                    textprops=dict(color="w"),pctdistance=0.9,startangle=90,colors = color_list)
+    ax.legend(wedges, list(total_dict.keys()), title="Genres", bbox_to_anchor=(1, 0, 0.5, 1))
+    plt.setp(autotexts, size=8,weight="bold")
+    ax.set_title("Genres for All Personalities",size=16)
+    plt.show()
+
+
+def autopct(pct):
+    return ('%.2f' % pct) if pct > 2 else ''
+
+def label_list(data):
+    return_list = []
+    index = 0
+    for k,v in data.items():
+        if index > len(list(data.keys())) -  6: 
+           return_list.append(k)
+        else:
+           return_list.append('')
+        index += 1
+    return return_list
+
+
+def make_youtube_categories_chart():
+    category_dict = {}
+    for personality in type_list:    
+        input_file = open('link_data/{0}.csv'.format(personality), 'r')
+        while True:
+            line = input_file.readline()
+            if not line:
+                break
+            components = line.split(',')   
+            category_dict[components[2]] = category_dict.get(components[2],0) + 1
+        input_file.close()
+    category_dict = {k: v for k, v in sorted(category_dict.items(), key=lambda item: item[1])}
+    fig, ax = plt.subplots(figsize=(20, 10), subplot_kw=dict(aspect="equal"))
+    wedges, texts, autotexts = ax.pie(list(category_dict.values()), labels=label_list(category_dict),autopct=autopct,
+                                    textprops=dict(color="w"),pctdistance=0.9,startangle=90)
+    ax.legend(wedges, list(category_dict.keys()), title="Categories", bbox_to_anchor=(1, 0, 0.5, 1))
+    plt.setp(autotexts, size=8,weight="bold")
+    ax.set_title("Youtube Link Categories",size=16)
+    plt.show()
+        
+# list(category_dict.keys())
 # make_genre_files()
-make_genre_charts()
+# make_genre_charts()
+make_youtube_categories_chart()

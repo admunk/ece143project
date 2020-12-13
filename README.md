@@ -24,7 +24,7 @@ Dependencies: get_link_ratio
 
 ##### make_video_data_files
 Creates csvs with output data for links from Youtube's API
-** Extremely long runtime/unneeded if all {Type}.csv exists **
+**Extremely long runtime/unneeded if all {Type}.csv exists**
 Dependencies: get_link_ratio
 
 ##### get_avg_view
@@ -39,7 +39,7 @@ Dependencies: get_avg_view
 
 ##### make_genre_files
 Creates csvs with output data for Youtube music videos from Spotify's API
-** Extremely long runtime/unneeded if all spotify-{Type}.csv exists **
+**Extremely long runtime/unneeded if all spotify-{Type}.csv exists**
 Dependencies: make_video_data_files
 
 ##### make_genre_charts

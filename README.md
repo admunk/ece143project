@@ -61,3 +61,66 @@ Dependecies: make_genre_files</p>
 ##### main
 Visualizes the usages for pronouns in the 1st/2nd/3rd person</p>
 Dependencies: none</p>
+
+### Word and Sentiment Analysis
+
+#### word_cloud.py 
+
+##### pre_process_data
+Preprocesses and cleans the text by removing links, punctuation and lower case</p>
+Dependencies: none</p>
+
+##### generate_wordcloud_tfidf
+Visualizes most commons words across all personality types</p>
+Dependencies: pre_process_data</p>
+
+#### sentiment_visualization.py
+
+##### run_vader
+Generates a dictionary of sentiment scores</p>
+Dependencies: none</p>
+
+##### get_sentiment_of_sentence
+Returns sentiment for a particular sentence</p>
+Dependencies: run_vader</p>
+
+##### get_sentiments
+Creates result_dict that contains number of positive, negative and neutral sentiments for each personality type</p>
+Dependencies: get_sentiments_of_sentence
+
+##### dump_result_dict
+Dumps the dictionary into a pickle file</p>
+Dependencies: get_sentiments</p>
+
+##### load_result_dict
+Load the dictionary from a pickle file</p>
+Dependencies: dump_result_dict</p>
+
+##### plot_sentiment_pies_charts
+Plots pie charts, showing percentage of each sentiment type for each personality type</p>
+Dependencies: load_result_dict</p>
+
+### User Count analysis
+
+#### mbti_visual_basic.py
+
+##### Script
+Visualizes the number of users per personality type and their average words per comment </p>
+Dependencies: none</p>
+
+### Libraries Used
+<ul>
+<li>numpy</li>
+<li>pandas</li>
+<li>re</li>
+<li>nltk</li>
+<li>sklearn</li>
+<li>wordcloud</li>
+<li>spacy</li>
+<li>matplotlib</li>
+<li>pickle</li>
+<li>seaborn</li>
+<li>vader</li>
+<li>pafy</li>
+<li>spotipy</li>
+</ul>

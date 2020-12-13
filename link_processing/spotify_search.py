@@ -3,9 +3,13 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
 type_list = ["ENFJ", "ENFP", "ENTJ", "ENTP", "ESFJ", "ESFP", "ESTJ", "ESTP", "INFJ", "INFP", "INTJ", "INTP", "ISFJ", "ISFP", "ISTJ", "ISTP"]
-genre_list = ["rock","hip hop","pop","electronic","r&b","dance","folk","jazz","classic","soundtrack"]
+genre_list = ["rock","hip hop","pop","electronic","r&b","dance","folk","jazz","classic","soundtrack","other"]
 color_list = ["#fff100","#ff8c00","#e81123","#ec008c","#68217a","#00188f","#bad80a","#00b294","#009e49","#00bcf2","#9f5f80","#fcf8ec"]
+indicators = ["E","I","N","S","F","T","P","J"]
 def find_genre(genre_list):
+    '''
+    Returns a main genre from a list of genres :genre_list: a list of genres
+    '''
     if len(genre_list) == 0:
         return 'other'
     for genre in genre_list:
@@ -29,15 +33,18 @@ def find_genre(genre_list):
             return 'classic'
         elif 'soundtrack' in genre or 'broadway' in genre:
             return 'soundtrack'
-    print(genre_list)
     if(len(generator) == 0):
         return 'unlisted'
     return 'other'
     
 
-def make_genre_files():
-    sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="cfdbf9aecc71457f9421a63b45d888f5",
-                                                            client_secret="6e73af200e5e4f9eb67010e6df985cb3"))
+def make_genre_files(id, secret):
+    '''
+    Makes a file for each personality type that returns data on a song using
+    Spotify's API :id: spotify API ID :secret: spotify API Secret
+    '''
+    sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=id,
+                                                            client_secret=secret))
     
     for personality in type_list:    
         input_file = open('link_data/{0}.csv'.format(personality), 'r')
@@ -72,6 +79,9 @@ def make_genre_files():
         output_file.close()
 
 def make_genre_charts():
+    '''
+    Creates visualization of genre data by personality
+    '''
     total_dict = {}
     for personality in type_list:
         input_file = open("link_data/spotify-{0}.csv".format(personality)) 
@@ -127,6 +137,9 @@ def label_list(data):
 
 
 def make_youtube_categories_chart():
+    '''
+    Makes visualization of youtube category data
+    '''
     category_dict = {}
     for personality in type_list:    
         input_file = open('link_data/{0}.csv'.format(personality), 'r')
@@ -140,13 +153,51 @@ def make_youtube_categories_chart():
     category_dict = {k: v for k, v in sorted(category_dict.items(), key=lambda item: item[1])}
     fig, ax = plt.subplots(figsize=(20, 10), subplot_kw=dict(aspect="equal"))
     wedges, texts, autotexts = ax.pie(list(category_dict.values()), labels=label_list(category_dict),autopct=autopct,
-                                    textprops=dict(color="w"),pctdistance=0.9,startangle=90)
+                                    textprops=dict(color="k"),pctdistance=0.9,startangle=90)
     ax.legend(wedges, list(category_dict.keys()), title="Categories", bbox_to_anchor=(1, 0, 0.5, 1))
     plt.setp(autotexts, size=8,weight="bold")
     ax.set_title("Youtube Link Categories",size=16)
     plt.show()
+
+def make_genre_charts_per_indicator():
+    '''
+    Visualizes data on genres by indicator
+    '''
+    total_dict = {}
+    for indicator in indicators:
+        total_dict[indicator] = {}
+        for genre in genre_list:
+            total_dict[indicator][genre] = 0
+    for personality in type_list:
+        input_file = open("link_data/spotify-{0}.csv".format(personality)) 
+        while True:
+            line = input_file.readline()
+            if not line:
+                break
+            if line.count(',') == 1:
+                components = line.split(',')
+                if(int(components[1]) > 0):   
+                    for indicator in indicators:
+                        if indicator in personality:
+                            total_dict[indicator][components[0]] = total_dict[indicator].get(components[0],0) + int(components[1])
+    for k,v in total_dict.items():
+        fig, ax = plt.subplots(figsize=(20, 10), subplot_kw=dict(aspect="equal"))
+        wedges, texts, autotexts = ax.pie(list(v.values()), labels=v.keys(),autopct='%1.1f%%',
+                                    textprops=dict(color="k"),pctdistance=0.9,startangle=90,colors = color_list)
+        ax.legend(wedges,v.keys(), title="Genres", bbox_to_anchor=(1, 0, 0.5, 1))
+        plt.setp(autotexts, size=8,weight="bold")
+        ax.set_title("{0}'s Genres".format(k),size=16)
+        plt.show()
+    input_file.close()
         
-# list(category_dict.keys())
+# Makes data files with Spotify information
 # make_genre_files()
-# make_genre_charts()
+
+#Genre charts for each personality type
+make_genre_charts()
+
+#Chart of youtube video categories
 make_youtube_categories_chart()
+
+#Genre chart by type indicator
+make_genre_charts_per_indicator()

@@ -12,7 +12,6 @@ def get_link_ratio(x):
     '''
     input_file = open(x, 'r')
     input_file.readline()
-    #output_file = open('output.txt','w')
     output_dict = {}
     comment_dict = {}
     link_dict = {}
@@ -59,14 +58,6 @@ def make_video_data_files(x):
                 continue
         output_file.close()
 
-def make_one_file(x, name):
-    output_file = open("link_data/{0}.csv".format(name), "w")
-    for v in x.get(name,[]):
-        try: 
-            video = pafy.new(v)
-            output_file.write("{0},{1},{2}\n".format(video.title.replace(",",""), video.viewcount,video.category))
-        except:
-            continue
 
 def get_avg_views(x):
     '''
@@ -91,61 +82,51 @@ def get_avg_views(x):
         file.close()
     return output_dictionary
 
-def get_link_categories(x):
+def make_avg_link_chart(x):
     '''
-    Test fuction to get counts of youtube links' categories. Discovery: most links
-    fall under Music. Functionality will be included in make_video_data_files.
-    :x: dictionary with personality types and youtube links
+    Outputs a visualization of the average links per personality :x: a dictionary
+    of personality types and their number of average links
     '''
-    output_dict = {}
-    for link in x.get('link_data/ESTP',[]):
-        try:
-            video = pafy.new(link)
-            output_dict[video.category] = output_dict.get(video.category,0) + 1
-        except:
-            continue
-    return output_dict
+    plt.figure(figsize=(20,10), facecolor='#FFFFFF')
+    sns.barplot(x=np.array(list(x.values())), y=np.array(list(x.keys())), color='#FFFFFF')
+    plt.ylabel('Type', fontsize=16)
+    plt.xlabel('Number of Links (Per 100 Posts)', fontsize=16)
+    plt.xticks(fontsize=16, rotation=0)
+    plt.yticks(fontsize=16, rotation=0)
+    plt.title('Average Links Per 100 Posts By Personality')
+    plt.show()
+
+def make_avg_views_chart(x):
+    '''
+    Outputs a visualization of the average views per personality :x: a dictionary
+    of personality types and their number of average views
+    '''
+    plt.figure(figsize=(20,10))
+    sns.barplot(x=np.array(list(x.values())), y=np.array(list(x.keys())))
+    plt.ylabel('Type', fontsize=16)
+    plt.xlabel('Average Views', fontsize=16)
+    plt.xticks(fontsize=16, rotation=0)
+    plt.yticks(fontsize=16, rotation=0)
+    plt.title('Average View Per Link By Personality')
+    plt.show()
 
 
-#Get link reation, print sorted map
+
+
+#Get link ratio, store for other functions
 x = get_link_ratio('mbti_1.csv')
 x = {k: v for k, v in sorted(x.items(), key=lambda item: item[1])}
-# print(x)
-# print({k: v for k, v in sorted(x.items(), key=lambda item: item[1])})
-'''
-{'ESFJ': 0.013875123885034688, 'ESTJ': 0.016137428422696512, 'ENTP': 0.026983797873285743, 
-'ENTJ': 0.02847511753747893, 'ESFP': 0.028893905191873587, 'ESTP': 0.03135808162324187, 
-'ENFP': 0.03158472946992585, 'ENFJ': 0.03165374677002584, 'ISFJ': 0.03201576160571358, 
-'INFJ': 0.03306289439012551, 'INTJ': 0.036820338853843074, 'ISTJ': 0.03792999092101281, 
-'ISTP': 0.03921687477269972, 'INTP': 0.03974178885399075, 'INFP': 0.042340416054167225, 
-'ISFP': 0.05169230769230769}
-'''
 
-# plt.figure(figsize=(20,10))
-# sns.barplot(x=np.array(list(x.values())), y=np.array(list(x.keys())))
-# plt.ylabel('Type', fontsize=16)
-# plt.xlabel('Number of Links (Per 100 Posts)', fontsize=16)
-# plt.xticks(fontsize=16, rotation=0)
-# plt.yticks(fontsize=16, rotation=0)
-# plt.title('Average Links Per 100 Posts By Personality')
-# plt.show()
-#create data files WARNING function makes ~11000 http requests, runtime ~ 2 hours
+#Visualize link rations
+make_avg_link_chart(x)
+
+
+# create data files WARNING function makes ~11000 http requests, runtime ~ 2 hours
 # make_video_data_files(youtube_links)
-# make_one_file(youtube_links, "ISTP")
 
-#Find average views per video, sort results
+#Find average views per video
 y = (get_avg_views(youtube_links))
 y = {k: v for k, v in sorted(y.items(), key=lambda item: item[1])}
-'''
-{'ESFJ': 0, 'ESFP': 0, 'ESTJ': 0, 'INTJ': 17136182, 'INFP': 18424824, 'INTP': 21762186, 
-'ISTJ': 22282518, 'ISTP': 25928740, 'INFJ': 29320080, 'ENFP': 30275269, 'ENFJ': 47571205, 
-'ISFJ': 48570312, 'ISFP': 48798584, 'ENTP': 50213236, 'ENTJ': 52580978, 'ESTP': 54378005}
-'''
-# plt.figure(figsize=(20,10))
-# sns.barplot(x=np.array(list(y.values())), y=np.array(list(y.keys())))
-# plt.ylabel('Type', fontsize=16)
-# plt.xlabel('Average Views', fontsize=16)
-# plt.xticks(fontsize=16, rotation=0)
-# plt.yticks(fontsize=16, rotation=0)
-# plt.title('Average View Per Link By Personality')
-# plt.show()
+
+#Visualize average view count
+make_avg_views_chart(y)
